@@ -1,0 +1,46 @@
+<template>
+  <lightning-card title="Customer Feedback Sentiment Analysis" icon-name="custom:custom14">
+    <div class="slds-m-around_medium">
+      <template for:each={questions} for:item="question">
+        <div key={question.id} class="slds-m-bottom_medium">
+          <lightning-textarea name={question.id} label={question.text} onchange={handleInputChange} required="true"></lightning-textarea>
+        </div>
+      </template>
+      <lightning-button label="Analyze Sentiment" onclick={handleAnalyze} class="slds-m-top_medium"></lightning-button>
+    </div>
+    <template if:true={sentimentResults.length}>
+      <div class="slds-m-around_medium">
+        <h2 class="slds-text-heading_medium medium-margin-bottom">Sentiment Analysis Results</h2>
+        <table class="table-style">
+          <thead>
+            <tr>
+              <th class="th-td-style th-style medium-padding">Question</th>
+              <th class="th-td-style th-style medium-padding">Sentiment Rating</th>
+              <th class="th-td-style explanation-style medium-padding">Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template for:each={sentimentResults} for:item="result">
+              <tr key={result.question}>
+                <td class="th-td-style td-style medium-padding">{result.question}</td>
+                <td class="th-td-style td-style medium-padding">
+                  <div class="flex-center">
+                    <span class="icon-margin">{result.sentiment}</span>
+                    <lightning-icon icon-name={result.icon} size="small"></lightning-icon>
+                  </div>
+                </td>
+                <td class="th-td-style explanation-style medium-padding">{result.explanation}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </template>
+    <!-- Loading Spinner -->
+    <template if:true={isLoading}>
+      <div class="slds-align_absolute-center">
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+      </div>
+    </template>
+  </lightning-card>
+</template>
